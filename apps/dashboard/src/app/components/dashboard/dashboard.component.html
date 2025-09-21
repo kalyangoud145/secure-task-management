@@ -1,0 +1,87 @@
+<div *ngIf="!isAuthenticated" class="max-w-sm mx-auto mt-10 p-6 bg-white rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Login</h2>
+  <form (ngSubmit)="login()">
+    <input type="text" [(ngModel)]="loginData.username" name="username" placeholder="Username" class="w-full mb-2 p-2 border rounded" required>
+    <input type="password" [(ngModel)]="loginData.password" name="password" placeholder="Password" class="w-full mb-4 p-2 border rounded" required>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Login</button>
+    <div *ngIf="loginError" class="text-red-500 mt-2">{{loginError}}</div>
+  </form>
+</div>
+
+<!-- Dashboard -->
+<div *ngIf="isAuthenticated" class="container mx-auto p-4">
+  <div class="flex justify-between items-center mb-4">
+    <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+    <button (click)="openCreateTask()" class="bg-green-500 text-white px-4 py-2 rounded ml-4">+ Add Task</button>
+  </div>
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+    <div>
+      <select [(ngModel)]="filter.category" (ngModelChange)="applyFilters()" class="border rounded p-2 mr-2">
+        <option value="">All Categories</option>
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>        
+      </select>
+      <select [(ngModel)]="filter.status" (ngModelChange)="applyFilters()" class="border rounded p-2 mr-2">
+        <option value="">All Status</option>
+        <option value="Todo">To Do</option>
+        <option value="Inprogress">In Progress</option>
+        <option value="Done">Done</option>
+      </select>
+      <select [(ngModel)]="sort" (ngModelChange)="applyFilters()" class="border rounded p-2">
+        <option value="">Sort By</option>
+        <option value="order">Order</option>
+        <option value="status">Status</option>
+      </select>
+    </div>
+  </div>
+  <div *ngIf="taskError" class="text-red-500 mb-4">{{taskError}}</div>
+
+  <!-- Task List with Drag-and-Drop -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let task of filteredTasks; let i = index" 
+         class="bg-white rounded shadow p-4 flex flex-col"
+         [draggable]="sort === 'order'"
+         (dragstart)="sort === 'order' && onDragStart(i)"
+         (dragover)="sort === 'order' && onDragOver($event)"
+         (drop)="sort === 'order' && onDrop(i)">
+      <div class="flex justify-between items-center mb-2">
+        <span class="font-bold">{{task.title}}</span>
+        <span class="text-xs px-2 py-1 rounded bg-gray-200">{{task.category}}</span>
+      </div>
+      <div class="mb-2">{{task.description}}</div>
+      <div class="flex justify-between items-center">
+        <span class="text-sm text-gray-500">{{task.status}}</span>
+        <div>
+          <button (click)="openEditTask(task)" class="text-blue-500 mr-2">Edit</button>
+          <button (click)="deleteTask(task.id)" class="text-red-500">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Task Modal -->
+<div *ngIf="showTaskModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded shadow w-full max-w-md">
+    <h2 class="text-xl font-bold mb-4">{{editingTask ? 'Edit Task' : 'Create Task'}}</h2>
+    <form (ngSubmit)="saveTask()">
+      <input type="text" [(ngModel)]="taskForm.title" name="title" placeholder="Title" class="w-full mb-2 p-2 border rounded" required>
+      <textarea [(ngModel)]="taskForm.description" name="description" placeholder="Description" class="w-full mb-2 p-2 border rounded"></textarea>
+      <select [(ngModel)]="taskForm.category" name="category" class="w-full mb-2 p-2 border rounded" required>
+        <option value="">Select Category</option>
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>        
+      </select>
+      <select [(ngModel)]="taskForm.status" name="status" class="w-full mb-4 p-2 border rounded" required>
+        <option value="Todo">To Do</option>
+        <option value="Inprogress">In Progress</option>
+        <option value="Done">Done</option>
+      </select>
+      <div *ngIf="taskError" class="text-red-500 mb-2">{{taskError}}</div>
+      <div class="flex justify-end">
+        <button type="button" (click)="closeTaskModal()" class="mr-2 px-4 py-2 rounded bg-gray-300">Cancel</button>
+        <button type="submit" class="px-4 py-2 rounded bg-blue-500 text-white">{{editingTask ? 'Update' : 'Create'}}</button>
+      </div>
+    </form>
+  </div>
+</div>
