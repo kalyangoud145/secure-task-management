@@ -33,7 +33,8 @@ or run script as in the package.json scripts section which is same as below
 npx nx serve dashboard
 ```
 ## there are also separate scrips for unit tests in the scripts section
-
+npx nx test api 
+npx nx test dashboard
 ---
 # Architecture Overview
 
@@ -225,14 +226,21 @@ Edit a task (Owner/Admin only).
 ```
 **Response:**
 ```json
-{ "success": true }
+{
+    "id": 6,
+    "title": "test",
+    "description": "data edit",
+    "category": "Work",
+    "status": "Todo",
+    "order": 0
+}
 ```
 
 #### `DELETE /deleteTask/:id`
 Delete a task (Owner/Admin only).
 **Response:**
 ```json
-{ "success": true }
+{ "deleted": true }
 ```
 
 ---
@@ -245,10 +253,9 @@ Get audit log (Owner/Admin only).
 ```json
 [
   {
-    "action": "create_task",
-    "user": "owner@org.com",
-    "timestamp": "2024-06-01T12:00:00Z"
-    // ...other fields...
+   "userId": 3,
+    "action": "LIST_TASKS",
+    "timestamp": "2025-09-22T01:29:53.023Z"
   }
 ]
 ```
@@ -277,4 +284,6 @@ Get audit log (Owner/Admin only).
 - Use indexed queries and denormalized tables for fast lookups in large organizations.
 - Consider policy engines  for complex, dynamic access rules.
 
+## Adding Validations in the UI for the task modal
+## add Role based and fine grained access  to the UI html elements so the user can see and perform the actions he is supposed to( EDIT, DELETE, CREATE).
 ---
