@@ -16,7 +16,9 @@ Create a `.env` file inside the `apps/api` directory with the following content:
 ```
 JWT_SECRET='jwt_secret_value'
 ```
-for sqlite once downloaded and setup successfully(https://sqlite.org/download.html) extract the files and move it to c drive and add the file path to the system variable path, db  along with tables should be auto generated with seed data . if backend is running
+- For sqlite once downloaded (https://sqlite.org/download.html) extract the files and move it to c drive and add the file path to the system variable path, db  along with tables should be auto generated with seed data . if backend is running. a db file will be created inside the root folder.
+
+- For db view  install SQLite3 Editor from vs code extensions, click on the db.sqlite file to view the tables   
 
 ### 3. Running the Applications
 
@@ -199,8 +201,7 @@ For different logins Use
 ```
 
 #### `PUT /task/:id/order`
-**Access:** Owner, Admin  
-**Fine-grained:** Must belong to the same organization as the task.  
+**Access:** Owner, Admin   
 **Description:** Update task order.
 
 **Request:**

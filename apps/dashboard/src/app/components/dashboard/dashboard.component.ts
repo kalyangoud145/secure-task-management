@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
     this.showTaskModal = true;
   }
 
-  openEditTask(task: any) {
+  openEditTask(task: Task) {
     this.taskError = '';
     this.editingTask = task;
     this.taskForm = { ...task };
@@ -116,6 +116,7 @@ export class DashboardComponent implements OnInit {
     this.showTaskModal = false;
   }
 
+  // hide error  message after 1 min
   setTaskError(msg: string) {
     this.taskError = msg;
     setTimeout(() => {
@@ -173,8 +174,9 @@ export class DashboardComponent implements OnInit {
     event.preventDefault();
   }
 
-  // ondrop only works if sorting by order
+  // ondrop only works if sorting by order to make it clear to the user to observe the changes
   onDrop(index: number) {
+    this.taskError = '';
     if (this.sort !== 'order') return;
     if (this.dragIndex === null) return;
     const dropTaskId = this.filteredTasks[index]?.id;
@@ -187,7 +189,11 @@ export class DashboardComponent implements OnInit {
     this.tasks.splice(this.dragIndex, 1);
     this.tasks.splice(dropIndex, 0, movedTask);
     this.tasks.forEach((task, i) => {
-      this.taskService.updateTaskOrder(task.id, i).subscribe();
+      this.taskService.updateTaskOrder(task.id, i).subscribe({
+        error: () => {
+          this.setTaskError('Error updating task order or you do not have permission');
+        }
+      });
     });
     this.dragIndex = null;
     this.loadData();
