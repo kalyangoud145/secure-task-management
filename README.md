@@ -2,8 +2,11 @@
 
 ### 1. Install Dependencies
 
+Node version `22.19.0` 
 ```bash
-npm install
+npm install  
+if above command fails because of conflicts use below command
+npm install --force
 ```
 
 ### 2. Environment Variables
@@ -292,6 +295,11 @@ For different logins Use
 - Use indexed queries and denormalized tables for fast lookups in large organizations.
 - Consider policy engines  for complex, dynamic access rules.
 
-## Adding Validations in the UI for the task modal
-## Add Role-based and fine-grained access to the UI HTML elements so the user can see and perform the actions they are permitted to (EDIT, DELETE, CREATE).
+## UI Enhancements
+- Adding Validations in the UI for the task modal and backend endpoints api validations
+- Add Role-based and fine-grained access to the UI HTML elements so the user can see and perform the actions they are permitted to (EDIT, DELETE, CREATE).
+-  Filtering the tasks data in backend with pagination for better performance
+- Currently the drag and drop feature is setup to work only when the sortBy filter is set to order, to make the task list clearly show the difference for the user
+- Separate the UI into separate components so we have clear pattern
+- Implement state management
 ---

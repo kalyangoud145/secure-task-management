@@ -32,6 +32,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     // Check for valid token before showing login
+    // For page refreshes if the token is still valid we should not show login
+    // and load tasks directly
     const token = this.taskService.getJwt();
     if (token && this.taskService.isTokenValid(token)) {
       this.isAuthenticated = true;
@@ -171,6 +173,7 @@ export class DashboardComponent implements OnInit {
     event.preventDefault();
   }
 
+  // ondrop only works if sorting by order
   onDrop(index: number) {
     if (this.sort !== 'order') return;
     if (this.dragIndex === null) return;
