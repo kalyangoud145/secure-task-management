@@ -42,6 +42,13 @@ describe('TaskService', () => {
   } as Role;
 
   beforeEach(async () => {
+    const mockQb = {
+      update: jest.fn().mockReturnThis(),
+      set: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      execute: jest.fn().mockResolvedValue({}),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TaskService,
@@ -53,7 +60,8 @@ describe('TaskService', () => {
             find: jest.fn(),
             findOne: jest.fn(),
             delete: jest.fn(),
-            createQueryBuilder: jest.fn(),
+            update: jest.fn(),
+            createQueryBuilder: jest.fn(() => mockQb),
           },
         },
         {
@@ -105,6 +113,7 @@ describe('TaskService', () => {
         ...taskInput,
         assignedTo: mockUser,
         organization: mockUser.organization,
+        order: 0,
       });
       expect(result).toEqual({
         id: mockTask.id,

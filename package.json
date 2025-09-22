@@ -5,7 +5,8 @@
   "scripts": {
     "serve:api": "npx nx serve api",
     "serve:dashboard": "npx nx serve dashboard",
-    "test:api": "npx nx test api"
+    "test:api": "npx nx test api",
+    "test:dashboard": "npx nx test dashboard"
   },
   "private": true,
   "dependencies": {

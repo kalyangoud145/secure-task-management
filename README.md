@@ -1,3 +1,40 @@
+## Setup Instructions
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Environment Variables
+
+Create a `.env` file inside the `apps/api` directory with the following content:
+
+```
+JWT_SECRET='jwt_secret_value'
+```
+for sqlite once downloaded and setup successfully(https://sqlite.org/download.html) extract the files and move it to c drive and add the file path to the system variable path, db  along with tables should be auto generated with seed data . if backend is running
+
+### 3. Running the Applications
+
+#### Backend (NestJS API)
+cd into the repo folder 
+```bash
+npm run serve:api
+or run script as in the package.json scripts section which is same as below
+npx nx serve api
+```
+
+#### Frontend (Angular Dashboard)
+
+```bash
+npm run serve:dashboard
+or run script as in the package.json scripts section which is same as below
+npx nx serve dashboard
+```
+## there are also separate scrips for unit tests in the scripts section
+
+---
 # Architecture Overview
 
 ## NX Monorepo Layout and Rationale
@@ -85,6 +122,13 @@ The data model is designed to support secure, role-based task management across 
 ### Authentication
 
 #### `POST /auth/login`
+For different logins Use
+```json
+{ email: 'owner@org.com', password: 'pass' }
+{ email: 'admin@org.com', password: 'pass'}
+{ email: 'viewer@org.com', password: 'pass'}
+```
+ 
 **Request:**
 ```json
 {
@@ -112,7 +156,6 @@ Create a new task (Owner/Admin only).
   "description": "Details...",
   "category": "Work",
   "status": "Todo",
-  "order": 1
 }
 ```
 **Response:**
@@ -133,7 +176,10 @@ List tasks (role-based).
   {
     "id": 1,
     "title": "Sample Task",
-    "status": "Todo"
+    "description": "Details...",
+    "status": "Todo",
+    "category": "Work",
+    "order": 0
     // ...other fields...
   }
 ]
