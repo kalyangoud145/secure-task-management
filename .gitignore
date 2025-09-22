@@ -46,4 +46,4 @@ Thumbs.db
 .angular
 
 .env
-.sqlite
+db.sqlite
