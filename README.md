@@ -129,7 +129,7 @@ For different logins Use
 { email: 'admin@org.com', password: 'pass'}
 { email: 'viewer@org.com', password: 'pass'}
 ```
- 
+
 **Request:**
 ```json
 {
@@ -149,7 +149,10 @@ For different logins Use
 ### Tasks
 
 #### `POST /task`
-Create a new task (Owner/Admin only).
+**Access:** Owner, Admin  
+**Fine-grained:** Must have `create_task` permission in their organization.  
+**Description:** Create a new task.
+
 **Request:**
 ```json
 {
@@ -170,7 +173,13 @@ Create a new task (Owner/Admin only).
 ```
 
 #### `GET /tasks`
-List tasks (role-based).
+**Access:** Viewer, Owner, Admin  
+**Fine-grained:**  
+- Admin: Lists all tasks in the system.  
+- Owner: Lists all tasks in their organization.  
+- Viewer: Lists only tasks assigned to themselves or with in the same organization and  should have `view_task` permission, with optional filters.  
+**Description:** List tasks.
+
 **Response:**
 ```json
 [
@@ -186,15 +195,11 @@ List tasks (role-based).
 ]
 ```
 
-#### `GET /tasks-by-categories`
-List categories for user's tasks.
-**Response:**
-```json
-["Work", "Personal"]
-```
-
 #### `PUT /task/:id/order`
-Update task order (Owner/Admin only).
+**Access:** Owner, Admin  
+**Fine-grained:** Must belong to the same organization as the task.  
+**Description:** Update task order.
+
 **Request:**
 ```json
 { "order": 2 }
@@ -204,19 +209,14 @@ Update task order (Owner/Admin only).
 { "success": true }
 ```
 
-#### `PUT /task/:id/status`
-Update task status (Owner/Admin only).
-**Request:**
-```json
-{ "status": "Done" }
-```
-**Response:**
-```json
-{ "success": true }
-```
-
 #### `PUT /editTask/:id`
-Edit a task (Owner/Admin only).
+**Access:** Owner, Admin  
+**Fine-grained:**  
+- Owner: Can edit any task in their organization.  
+- Admin: Can edit any task in their organization.  
+- Viewer: Cannot edit.  
+**Description:** Edit a task.
+
 **Request:**
 ```json
 {
@@ -237,7 +237,13 @@ Edit a task (Owner/Admin only).
 ```
 
 #### `DELETE /deleteTask/:id`
-Delete a task (Owner/Admin only).
+**Access:** Owner, Admin  
+**Fine-grained:**  
+- Owner: Can delete any task in their organization.  
+- Admin: Can delete any task in their organization.  
+- Viewer: Cannot delete.  
+**Description:** Delete a task.
+
 **Response:**
 ```json
 { "deleted": true }
@@ -248,7 +254,9 @@ Delete a task (Owner/Admin only).
 ### Audit Log
 
 #### `GET /audit-log`
-Get audit log (Owner/Admin only).
+**Access:** Owner, Admin  
+**Description:** Get audit log of actions performed.
+
 **Response:**
 ```json
 [
@@ -285,5 +293,5 @@ Get audit log (Owner/Admin only).
 - Consider policy engines  for complex, dynamic access rules.
 
 ## Adding Validations in the UI for the task modal
-## add Role based and fine grained access  to the UI html elements so the user can see and perform the actions he is supposed to( EDIT, DELETE, CREATE).
+## Add Role-based and fine-grained access to the UI HTML elements so the user can see and perform the actions they are permitted to (EDIT, DELETE, CREATE).
 ---
